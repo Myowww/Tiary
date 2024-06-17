@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Diary - Diary</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Travel Diary</h1>
+    </header>
+    <main>
+        <section class="diary-section">
+            <h2>여행 일기</h2>
+            <form id="diary-form">
+                <label for="date">날짜:</label>
+                <input type="date" id="date" name="date" required>
+                <label for="content">내용:</label>
+                <textarea id="content" name="content" rows="4" required></textarea>
+                <button type="submit">저장</button>
+            </form>
+            <div class="diary-list">
+                <!-- 작성된 일기 목록 -->
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Travel Diary</p>
+    </footer>
+    <script src="scripts.js"></script>
+</body>
+</html>
