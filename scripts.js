@@ -43,30 +43,6 @@ areaBtn.addEventListener('click', () => {
 });
 
 
-document.addEventListener('DOMContentLoaded', () => {
-  loadDiaryEntries(); // 페이지 로딩 시 저장된 일기 목록을 로드
-
-  const diaryForm = document.getElementById('diary-form');
-  diaryForm.addEventListener('submit', function(event) {
-      event.preventDefault();
-      
-      const date = document.getElementById('date').value;
-      const content = document.getElementById('content').value;
-
-      // 날짜 또는 내용이 비어있을 경우 경고창 띄우기
-      if (!date || !content) {
-          alert('날짜와 내용을 모두 입력하세요.');
-          return; // 함수 종료
-      }
-
-      saveDiaryEntry(date, content); // 일기 저장 함수 호출
-
-      diaryForm.reset(); // 폼 초기화
-      loadDiaryEntries(); // 저장 후 목록 갱신
-  });
-});
-
-// 저장된 일기 목록을 로드하는 함수
 function loadDiaryEntries() {
   const diaryList = document.querySelector('.diary-list');
   const entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
@@ -86,21 +62,6 @@ function loadDiaryEntries() {
           loadDiaryEntries(); // 삭제 후 목록 갱신
       });
   });
-}
-
-// 일기를 저장하는 함수
-function saveDiaryEntry(date, content) {
-  const entry = { date, content };
-  let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-  entries.push(entry);
-  localStorage.setItem('diaryEntries', JSON.stringify(entries));
-}
-
-// 일기를 삭제하는 함수
-function deleteDiaryEntry(index) {
-  let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-  entries.splice(index, 1); // 해당 인덱스의 일기 제거
-  localStorage.setItem('diaryEntries', JSON.stringify(entries));
 }
 
 // 일기 항목을 생성하여 반환하는 함수
