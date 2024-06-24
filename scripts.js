@@ -44,43 +44,73 @@ areaBtn.addEventListener('click', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadDiaryEntries(); // 페이지 로딩 시 저장된 일기 목록을 로드
+  loadDiaryEntries(); // 페이지 로딩 시 저장된 일기 목록을 로드
 
-    const diaryForm = document.getElementById('diary-form');
-    diaryForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        
-        const date = document.getElementById('date').value;
-        const content = document.getElementById('content').value;
+  const diaryForm = document.getElementById('diary-form');
+  diaryForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const date = document.getElementById('date').value;
+      const content = document.getElementById('content').value;
 
-        saveDiaryEntry(date, content); // 일기 저장 함수 호출
+      // 날짜 또는 내용이 비어있을 경우 경고창 띄우기
+      if (!date || !content) {
+          alert('날짜와 내용을 모두 입력하세요.');
+          return; // 함수 종료
+      }
 
-        diaryForm.reset(); // 폼 초기화
+      saveDiaryEntry(date, content); // 일기 저장 함수 호출
 
-        // 저장 후 일기 목록 페이지로 이동
-        window.location.href = 'diary.html';
-    });
+      diaryForm.reset(); // 폼 초기화
+      loadDiaryEntries(); // 저장 후 목록 갱신
+  });
 });
 
 // 저장된 일기 목록을 로드하는 함수
 function loadDiaryEntries() {
-    const diaryList = document.querySelector('.diary-list');
-    const entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+  const diaryList = document.querySelector('.diary-list');
+  const entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
 
-    diaryList.innerHTML = ''; // 기존 목록 초기화
+  diaryList.innerHTML = ''; // 기존 목록 초기화
 
-    entries.forEach(entry => {
-        const entryElement = document.createElement('div');
-        entryElement.classList.add('diary-entry');
-        entryElement.innerHTML = `<h3>${entry.date}</h3><p>${entry.content}</p>`;
-        diaryList.appendChild(entryElement);
-    });
+  entries.forEach((entry, index) => {
+      const entryElement = createDiaryEntryElement(entry, index);
+      diaryList.appendChild(entryElement);
+  });
+
+  // 삭제 버튼 이벤트 리스너 등록
+  diaryList.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function() {
+          const index = parseInt(this.getAttribute('data-index'));
+          deleteDiaryEntry(index); // 일기 삭제 함수 호출
+          loadDiaryEntries(); // 삭제 후 목록 갱신
+      });
+  });
 }
 
 // 일기를 저장하는 함수
 function saveDiaryEntry(date, content) {
-    const entry = { date, content };
-    let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
-    entries.push(entry);
-    localStorage.setItem('diaryEntries', JSON.stringify(entries));
+  const entry = { date, content };
+  let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+  entries.push(entry);
+  localStorage.setItem('diaryEntries', JSON.stringify(entries));
+}
+
+// 일기를 삭제하는 함수
+function deleteDiaryEntry(index) {
+  let entries = JSON.parse(localStorage.getItem('diaryEntries')) || [];
+  entries.splice(index, 1); // 해당 인덱스의 일기 제거
+  localStorage.setItem('diaryEntries', JSON.stringify(entries));
+}
+
+// 일기 항목을 생성하여 반환하는 함수
+function createDiaryEntryElement(entry, index) {
+  const entryElement = document.createElement('div');
+  entryElement.classList.add('diary-entry');
+  entryElement.innerHTML = `
+      <h3>${entry.date}</h3>
+      <p>${entry.content}</p>
+      <button class="delete-btn" data-index="${index}">삭제</button>
+  `;
+  return entryElement;
 }
