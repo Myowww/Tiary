@@ -10,15 +10,13 @@
     <!-- 헤더 -->
     <header>
         <h1>Travel Diary</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="diary.html">Travel Diary</a></li>
+            </ul>
+        </nav>
     </header>
-
-    <!-- 네비게이션 -->
-    <nav>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li><a href="diary.html">Travel Diary</a></li>
-        </ul>
-    </nav>
 
     <!-- 메인 -->
     <main>
@@ -44,5 +42,10 @@
 
     <!-- 자바스크립트 연결 -->
     <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadDiaryEntries(); // 페이지 로딩 시 저장된 일기 목록을 로드
+        });
+    </script>
 </body>
 </html>
